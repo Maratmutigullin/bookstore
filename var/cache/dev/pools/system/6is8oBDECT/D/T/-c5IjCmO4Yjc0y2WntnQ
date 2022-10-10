@@ -1,0 +1,71 @@
+<?php //App%255CController%255CBookController%2523booksByCategory
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['OpenApi\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Annotations\\Response')),
+        clone ($p['Nelmio\\ApiDocBundle\\Annotation\\Model'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Nelmio\\ApiDocBundle\\Annotation\\Model')),
+        clone ($p['OpenApi\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Context')),
+        clone ($p['OpenApi\\Loggers\\DefaultLogger'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Loggers\\DefaultLogger')),
+        clone $p['OpenApi\\Context'],
+        clone $p['OpenApi\\Loggers\\DefaultLogger'],
+    ],
+    null,
+    [
+        'stdClass' => [
+            'attachables' => [
+                [
+                    $o[1],
+                ],
+            ],
+            '_context' => [
+                $o[4],
+                $o[2],
+            ],
+            'response' => [
+                200,
+            ],
+            'description' => [
+                'Returns published books inside a category',
+            ],
+            'type' => [
+                1 => 'App\\Model\\BookListResponse',
+            ],
+            'logger' => [
+                2 => $o[3],
+                4 => $o[5],
+            ],
+            'filename' => [
+                2 => '/Users/maratmutigullin/Desktop/scool/bookstore/vendor/zircote/swagger-php/src/Attributes/Attachable.php',
+                4 => '/Users/maratmutigullin/Desktop/scool/bookstore/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+            ],
+            'line' => [
+                2 => 14,
+                4 => 1474,
+            ],
+            'method' => [
+                2 => '__construct',
+                4 => 'instantiateAnnotiation',
+            ],
+            'class' => [
+                2 => 'Attachable',
+                4 => 'DocParser',
+            ],
+            'namespace' => [
+                2 => 'OpenApi\\Attributes',
+                4 => 'Doctrine\\Common\\Annotations',
+            ],
+            'annotations' => [
+                2 => [
+                    $o[1],
+                ],
+                4 => [
+                    $o[0],
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+    ],
+    []
+); }];

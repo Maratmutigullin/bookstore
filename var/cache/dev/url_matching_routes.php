@@ -8,15 +8,19 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
-        '/' => [[['_route' => 'app_default_root', '_controller' => 'App\\Controller\\DefaultController::root'], null, null, null, false, false, null]],
+        '/api/v1/book/categories' => [[['_route' => 'app_bookcategory_categories', '_controller' => 'App\\Controller\\BookCategoryController::categories'], null, ['GET' => 0], null, false, false, null]],
+        '/api/doc.json' => [[['_route' => 'app.swagger', '_controller' => 'nelmio_api_doc.controller.swagger'], null, ['GET' => 0], null, false, false, null]],
+        '/api/doc' => [[['_route' => 'app.swagger_ui', '_controller' => 'nelmio_api_doc.controller.swagger_ui'], null, ['GET' => 0], null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
-                .'|/_error/(\\d+)(?:\\.([^/]++))?(*:35)'
+                .'|/api/v1/category/([^/]++)/books(*:38)'
+                .'|/_error/(\\d+)(?:\\.([^/]++))?(*:73)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
-        35 => [
+        38 => [[['_route' => 'app_book_booksbycategory', '_controller' => 'App\\Controller\\BookController::booksByCategory'], ['id'], ['GET' => 0], null, false, false, null]],
+        73 => [
             [['_route' => '_preview_error', '_controller' => 'error_controller::preview', '_format' => 'html'], ['code', '_format'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

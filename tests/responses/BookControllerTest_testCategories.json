@@ -1,0 +1,15 @@
+{
+  "items": [
+    {
+      "id": 5,
+      "title": "PHP developer",
+      "slug": "php",
+      "image": "https:\/\/m.media-amazon.com\/images\/I\/51D1Z40PIUL._SX260_.jpg",
+      "authors": [
+        "Plum Island"
+      ],
+      "meap": false,
+      "publicationDate": 1546300800
+    }
+  ]
+}
