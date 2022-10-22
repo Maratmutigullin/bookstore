@@ -4,7 +4,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-
+    exeptions:
+        #App\Exeption\BookCategoryNotFoundExeption: {code: 404, hidden: false, loggable: false }
+        App\Exception\BookCategoryNotFoundException: { code: 404, hidden: false }
+# hidden означает что сообщение об ошибке не скрываем а отдаем пользователю
+# loggable определяет стоит ли логировать сообщение об ошибке или нет
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -22,3 +26,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\ExeptionHandler\ExeptionMappingResolver:
+        arguments: ['%exeptions%']
+#event должен быть опр обязательно ниже  App\: resource: '../src/'
+    App\Listener\ApiExeptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, priority: 10 }

@@ -1,10 +1,8 @@
 <?php
-
-
 namespace App\Service;
 
-
 use App\Entity\Book;
+use App\Exception\BookCategoryNotFoundException;
 use App\Exception\BookCategoryNotFoundExeption;
 use App\Model\BookListItem;
 use App\Model\BookListResponse;
@@ -19,9 +17,8 @@ class BookService
 
     public function getBooksByCategory(int $categoryId): BookListResponse
     {
-        $category = $this->bookCategoryRepository->find($categoryId);
-        if (null == $category) {
-            throw new BookCategoryNotFoundExeption();
+        if (!$this->bookCategoryRepository->existsById($categoryId)) {
+            throw new BookCategoryNotFoundException();
         }
 
         return new BookListResponse(array_map(
@@ -41,4 +38,6 @@ class BookService
             ->setMeap($book->isMeap())
             ->setPublicationDate($book->getPublicationDate()->getTimestamp());
     }
+
+
 }

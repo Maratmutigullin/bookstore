@@ -8,11 +8,20 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
-        '/api/v1/book/categories' => [[['_route' => 'app_bookcategory_categories', '_controller' => 'App\\Controller\\BookCategoryController::categories'], null, null, null, false, false, null]],
+        '/api/v1/book/categories' => [[['_route' => 'app_bookcategory_categories', '_controller' => 'App\\Controller\\BookCategoryController::categories'], null, ['GET' => 0], null, false, false, null]],
+        '/api/doc.json' => [[['_route' => 'app.swagger', '_controller' => 'nelmio_api_doc.controller.swagger'], null, ['GET' => 0], null, false, false, null]],
+        '/api/doc' => [[['_route' => 'app.swagger_ui', '_controller' => 'nelmio_api_doc.controller.swagger_ui'], null, ['GET' => 0], null, false, false, null]],
     ],
     [ // $regexpList
+        0 => '{^(?'
+                .'|/api/v1/category/([^/]++)/books(*:38)'
+            .')/?$}sDu',
     ],
     [ // $dynamicRoutes
+        38 => [
+            [['_route' => 'app_book_booksbycategory', '_controller' => 'App\\Controller\\BookController::booksByCategory'], ['id'], ['GET' => 0], null, false, false, null],
+            [null, null, null, null, false, false, 0],
+        ],
     ],
     null, // $checkCondition
 ];

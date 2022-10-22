@@ -66,26 +66,70 @@ return [[
 '[C]App%5CController%5CBookCategoryController' => 1,
 'App%5CController%5CBookCategoryController%23__construct' => 0,
 '[C]App%5CController%5CBookCategoryController%23__construct' => 1,
-'App%5CController%5CBookCategoryController%23categories' => 0,
+'App%5CController%5CBookCategoryController%23categories' => 2,
 '[C]App%5CController%5CBookCategoryController%23categories' => 1,
 'App%5CController%5CBookCategoryController%24bookCategoryService' => 0,
 '[C]App%5CController%5CBookCategoryController%24bookCategoryService' => 1,
+'App%5CController%5CBookController' => 0,
+'[C]App%5CController%5CBookController' => 1,
+'App%5CController%5CBookController%23__construct' => 0,
+'[C]App%5CController%5CBookController%23__construct' => 1,
+'App%5CController%5CBookController%23booksByCategory' => 3,
+'[C]App%5CController%5CBookController%23booksByCategory' => 1,
+'App%5CController%5CBookController%24bookService' => 0,
+'[C]App%5CController%5CBookController%24bookService' => 1,
 'App%5CEntity%5CBook' => 0,
 '[C]App%5CEntity%5CBook' => 1,
+'App%5CEntity%5CBook%23__construct' => 0,
+'[C]App%5CEntity%5CBook%23__construct' => 1,
 'App%5CEntity%5CBook%23getId' => 0,
 '[C]App%5CEntity%5CBook%23getId' => 1,
 'App%5CEntity%5CBook%23getTitle' => 0,
 '[C]App%5CEntity%5CBook%23getTitle' => 1,
 'App%5CEntity%5CBook%23setTitle' => 0,
 '[C]App%5CEntity%5CBook%23setTitle' => 1,
+'App%5CEntity%5CBook%23getSlug' => 0,
+'[C]App%5CEntity%5CBook%23getSlug' => 1,
+'App%5CEntity%5CBook%23setSlug' => 0,
+'[C]App%5CEntity%5CBook%23setSlug' => 1,
+'App%5CEntity%5CBook%23getImage' => 0,
+'[C]App%5CEntity%5CBook%23getImage' => 1,
+'App%5CEntity%5CBook%23setImage' => 0,
+'[C]App%5CEntity%5CBook%23setImage' => 1,
+'App%5CEntity%5CBook%23getAutors' => 0,
+'[C]App%5CEntity%5CBook%23getAutors' => 1,
+'App%5CEntity%5CBook%23setAutors' => 0,
+'[C]App%5CEntity%5CBook%23setAutors' => 1,
+'App%5CEntity%5CBook%23getPublicationDate' => 0,
+'[C]App%5CEntity%5CBook%23getPublicationDate' => 1,
+'App%5CEntity%5CBook%23setPublicationDate' => 0,
+'[C]App%5CEntity%5CBook%23setPublicationDate' => 1,
+'App%5CEntity%5CBook%23isMeap' => 0,
+'[C]App%5CEntity%5CBook%23isMeap' => 1,
+'App%5CEntity%5CBook%23setMeap' => 0,
+'[C]App%5CEntity%5CBook%23setMeap' => 1,
+'App%5CEntity%5CBook%23getCategories' => 0,
+'[C]App%5CEntity%5CBook%23getCategories' => 1,
+'App%5CEntity%5CBook%23setCategories' => 0,
+'[C]App%5CEntity%5CBook%23setCategories' => 1,
 'App%5CEntity%5CBook%24id' => 0,
 '[C]App%5CEntity%5CBook%24id' => 1,
 'App%5CEntity%5CBook%24title' => 0,
 '[C]App%5CEntity%5CBook%24title' => 1,
+'App%5CEntity%5CBook%24slug' => 0,
+'[C]App%5CEntity%5CBook%24slug' => 1,
+'App%5CEntity%5CBook%24image' => 0,
+'[C]App%5CEntity%5CBook%24image' => 1,
+'App%5CEntity%5CBook%24autors' => 0,
+'[C]App%5CEntity%5CBook%24autors' => 1,
+'App%5CEntity%5CBook%24publicationDate' => 0,
+'[C]App%5CEntity%5CBook%24publicationDate' => 1,
+'App%5CEntity%5CBook%24meap' => 0,
+'[C]App%5CEntity%5CBook%24meap' => 1,
+'App%5CEntity%5CBook%24categories' => 0,
+'[C]App%5CEntity%5CBook%24categories' => 1,
 'App%5CEntity%5CBookCategory' => 0,
 '[C]App%5CEntity%5CBookCategory' => 1,
-'App%5CEntity%5CBookCategory%23setId' => 0,
-'[C]App%5CEntity%5CBookCategory%23setId' => 1,
 'App%5CEntity%5CBookCategory%23getId' => 0,
 '[C]App%5CEntity%5CBookCategory%23getId' => 1,
 'App%5CEntity%5CBookCategory%23getTitle' => 0,
@@ -540,6 +584,38 @@ return [[
 '[C]Doctrine%5CORM%5CPersisters%5CEntity%5CSingleTablePersister%23generateFilterConditionSQL' => 1,
 'Doctrine%5CORM%5CPersisters%5CEntity%5CSingleTablePersister%23getSQLResultCasing' => 0,
 '[C]Doctrine%5CORM%5CPersisters%5CEntity%5CSingleTablePersister%23getSQLResultCasing' => 1,
+'JsonSchema%5CEntity%5CJsonPointer' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23__construct' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23__construct' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23decodePropertyPaths' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23decodePropertyPaths' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23encodePropertyPaths' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23encodePropertyPaths' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23decodePath' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23decodePath' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23encodePath' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23encodePath' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23getFilename' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23getFilename' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23getPropertyPaths' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23getPropertyPaths' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23withPropertyPaths' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23withPropertyPaths' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23getPropertyPathAsString' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23getPropertyPathAsString' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23__toString' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23__toString' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23setFromDefault' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23setFromDefault' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%23fromDefault' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%23fromDefault' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%24filename' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%24filename' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%24propertyPaths' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%24propertyPaths' => 1,
+'JsonSchema%5CEntity%5CJsonPointer%24fromDefault' => 0,
+'[C]JsonSchema%5CEntity%5CJsonPointer%24fromDefault' => 1,
 'Nelmio%5CApiDocBundle%5CController%5CDocumentationController' => 0,
 '[C]Nelmio%5CApiDocBundle%5CController%5CDocumentationController' => 1,
 'Nelmio%5CApiDocBundle%5CController%5CDocumentationController%23__construct' => 0,
@@ -594,6 +670,148 @@ return [[
 ], [
 
 0 => [],
-1 => 1665320829,
+1 => 1665943329,
+2 => static function () {
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['OpenApi\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Annotations\\Response')),
+            clone ($p['Nelmio\\ApiDocBundle\\Annotation\\Model'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Nelmio\\ApiDocBundle\\Annotation\\Model')),
+            clone ($p['OpenApi\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Context')),
+            clone ($p['OpenApi\\Loggers\\DefaultLogger'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Loggers\\DefaultLogger')),
+            clone $p['OpenApi\\Context'],
+            clone $p['OpenApi\\Loggers\\DefaultLogger'],
+        ],
+        null,
+        [
+            'stdClass' => [
+                'attachables' => [
+                    [
+                        $o[1],
+                    ],
+                ],
+                '_context' => [
+                    $o[4],
+                    $o[2],
+                ],
+                'response' => [
+                    200,
+                ],
+                'description' => [
+                    'Returns book categories',
+                ],
+                'type' => [
+                    1 => 'App\\Model\\BookCategoryListResponse',
+                ],
+                'logger' => [
+                    2 => $o[3],
+                    4 => $o[5],
+                ],
+                'filename' => [
+                    2 => '/Users/maratmutigullin/Desktop/scool/bookstore/vendor/zircote/swagger-php/src/Attributes/Attachable.php',
+                    4 => '/Users/maratmutigullin/Desktop/scool/bookstore/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                ],
+                'line' => [
+                    2 => 14,
+                    4 => 1474,
+                ],
+                'method' => [
+                    2 => '__construct',
+                    4 => 'instantiateAnnotiation',
+                ],
+                'class' => [
+                    2 => 'Attachable',
+                    4 => 'DocParser',
+                ],
+                'namespace' => [
+                    2 => 'OpenApi\\Attributes',
+                    4 => 'Doctrine\\Common\\Annotations',
+                ],
+                'annotations' => [
+                    2 => [
+                        $o[1],
+                    ],
+                    4 => [
+                        $o[0],
+                    ],
+                ],
+            ],
+        ],
+        [
+            $o[0],
+        ],
+        []
+    );
+},
+3 => static function () {
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['OpenApi\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Annotations\\Response')),
+            clone ($p['Nelmio\\ApiDocBundle\\Annotation\\Model'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Nelmio\\ApiDocBundle\\Annotation\\Model')),
+            clone ($p['OpenApi\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Context')),
+            clone ($p['OpenApi\\Loggers\\DefaultLogger'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Loggers\\DefaultLogger')),
+            clone $p['OpenApi\\Context'],
+            clone $p['OpenApi\\Loggers\\DefaultLogger'],
+        ],
+        null,
+        [
+            'stdClass' => [
+                'attachables' => [
+                    [
+                        $o[1],
+                    ],
+                ],
+                '_context' => [
+                    $o[4],
+                    $o[2],
+                ],
+                'response' => [
+                    200,
+                ],
+                'description' => [
+                    'Returns published books inside a category',
+                ],
+                'type' => [
+                    1 => 'App\\Model\\BookListResponse',
+                ],
+                'logger' => [
+                    2 => $o[3],
+                    4 => $o[5],
+                ],
+                'filename' => [
+                    2 => '/Users/maratmutigullin/Desktop/scool/bookstore/vendor/zircote/swagger-php/src/Attributes/Attachable.php',
+                    4 => '/Users/maratmutigullin/Desktop/scool/bookstore/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                ],
+                'line' => [
+                    2 => 14,
+                    4 => 1474,
+                ],
+                'method' => [
+                    2 => '__construct',
+                    4 => 'instantiateAnnotiation',
+                ],
+                'class' => [
+                    2 => 'Attachable',
+                    4 => 'DocParser',
+                ],
+                'namespace' => [
+                    2 => 'OpenApi\\Attributes',
+                    4 => 'Doctrine\\Common\\Annotations',
+                ],
+                'annotations' => [
+                    2 => [
+                        $o[1],
+                    ],
+                    4 => [
+                        $o[0],
+                    ],
+                ],
+            ],
+        ],
+        [
+            $o[0],
+        ],
+        []
+    );
+},
 
 ]];
