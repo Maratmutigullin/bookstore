@@ -9,11 +9,12 @@ class ExeptionMappingResolver
     /**
      * @var ExeptionMapping[]
      */
-    private array $mappings;
+    private array $mappings = [];
 
     public function __construct(array $mappings)
     {
         foreach ($mappings as $class => $mapping) {
+            //dump($mapping);die();
             if (empty($mapping['code'])) {
                 throw new InvalidArgumentException('code is mandatory for class ' . $class);
             }
@@ -21,23 +22,27 @@ class ExeptionMappingResolver
                 $class,
                 $mapping['code'],
                 $mapping['hidden'] ?? true,
-                $mapping['loggable'] ?? false);
+                $mapping['loggable'] ?? false
+            );
         }
     }
-//нужно чтобы определять что это именно этот класс из services
-    public function resolve(string $throwableClass ): ?ExeptionMapping
+
+    //нужно чтобы определять что это именно этот класс из services
+    public function resolve(string $throwableClass): ?ExeptionMapping
     {
         $foundMapping = null;
 
         foreach ($this->mappings as $class => $mapping) {
-            if($throwableClass === $class || is_subclass_of($throwableClass, $class)) {
+            if ($throwableClass === $class || is_subclass_of($throwableClass, $class)) {
                 $foundMapping = $mapping;
                 break;
             }
         }
+
         return $foundMapping;
     }
-    private function addMapping(string $class, int $code, bool $hidden, bool $loggable):void
+
+    private function addMapping(string $class, int $code, bool $hidden, bool $loggable): void
     {
         $this->mappings[$class] = new ExeptionMapping($code, $hidden, $loggable);
     }

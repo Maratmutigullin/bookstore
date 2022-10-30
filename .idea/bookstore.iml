@@ -116,6 +116,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/softcreatr/jsonpath" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/helmich/phpunit-json-assert" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/justinrainbow/json-schema" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/monolog-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/monolog-bridge" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

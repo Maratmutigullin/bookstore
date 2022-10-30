@@ -4,9 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    exeptions:
+    exceptions:
         #App\Exeption\BookCategoryNotFoundExeption: {code: 404, hidden: false, loggable: false }
-        App\Exception\BookCategoryNotFoundException: { code: 404, hidden: false }
+        App\Exception\BookCategoryNotFoundException: {code: 404, hidden: false}
 # hidden означает что сообщение об ошибке не скрываем а отдаем пользователю
 # loggable определяет стоит ли логировать сообщение об ошибке или нет
 services:
@@ -14,6 +14,8 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            bool $isDebug: '%kernel.debug%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -28,7 +30,7 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Service\ExeptionHandler\ExeptionMappingResolver:
-        arguments: ['%exeptions%']
+        arguments: ['%exceptions%']
 #event должен быть опр обязательно ниже  App\: resource: '../src/'
     App\Listener\ApiExeptionListener:
         tags:

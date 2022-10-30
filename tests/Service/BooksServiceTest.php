@@ -3,8 +3,7 @@
 namespace App\Tests\Service;
 
 use App\Entity\Book;
-use App\Entity\BookCategory;
-use App\Exception\BookCategoryNotFoundExeption;
+use App\Exception\BookCategoryNotFoundException;
 use App\Model\BookListItem;
 use App\Model\BookListResponse;
 use App\Repository\BookCategoryRepository;
@@ -24,7 +23,7 @@ class BooksServiceTest extends AbstractTestCase
             ->with(130)
             ->willReturn(false);
 
-        $this->expectException(BookCategoryNotFoundExeption::class);
+        $this->expectException(BookCategoryNotFoundException::class);
 
         (new BookService($bookRepository, $bookCategoryRepository))->getBooksByCategory(130);
 

@@ -1,8 +1,5 @@
 <?php
-
-
 namespace App\Tests;
-
 
 use ReflectionClass;
 use PHPUnit\Framework\TestCase;
@@ -16,6 +13,5 @@ abstract class AbstractTestCase extends TestCase
         $property->setAccessible(true);
         $property->setValue($entity, $value);
         $property->setAccessible(false);
-
     }
 }
