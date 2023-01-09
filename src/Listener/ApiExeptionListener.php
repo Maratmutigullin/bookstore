@@ -2,6 +2,7 @@
 
 namespace App\Listener;
 
+use App\Model\ErrorDebugDetails;
 use App\Model\ErrorResponse;
 use App\Service\ExeptionHandler\ExeptionMapping;
 use App\Service\ExeptionHandler\ExeptionMappingResolver;
@@ -39,7 +40,7 @@ class ApiExeptionListener
 
         //сообщение пользователю
         $message = $mapping->isHidden() ? Response::$statusTexts[$mapping->getCode()] : $throwable->getMessage();
-        $details = $this->isDebug ? ['trace' => $throwable->getTraceAsString()] : null;
+        $details = $this->isDebug ? new ErrorDebugDetails($throwable->getTraceAsString()) : null;
         //тело ответа
         $data = $this->serializer->serialize(new ErrorResponse($message, $details), JsonEncoder::FORMAT);
 

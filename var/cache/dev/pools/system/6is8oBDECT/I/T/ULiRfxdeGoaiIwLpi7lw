@@ -1,0 +1,78 @@
+<?php //App%255CModel%255CErrorResponse%2523getDetails
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['OpenApi\\Annotations\\Property'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Annotations\\Property')),
+        clone ($p['OpenApi\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Context')),
+        clone ($p['OpenApi\\Loggers\\DefaultLogger'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Loggers\\DefaultLogger')),
+        clone ($p['Nelmio\\ApiDocBundle\\Annotation\\Model'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Nelmio\\ApiDocBundle\\Annotation\\Model')),
+        clone ($p['OpenApi\\Annotations\\Schema'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Annotations\\Schema')),
+        clone $p['OpenApi\\Context'],
+        clone $p['Nelmio\\ApiDocBundle\\Annotation\\Model'],
+        clone $p['OpenApi\\Annotations\\Schema'],
+    ],
+    null,
+    [
+        'stdClass' => [
+            '_context' => [
+                $o[1],
+                3 => $o[1],
+                $o[5],
+                6 => $o[1],
+                $o[5],
+            ],
+            'type' => [
+                'object',
+                3 => 'App\\Model\\ErrorDebugDetails',
+                6 => 'App\\Model\\ErrorValidationDetails',
+            ],
+            'oneOf' => [
+                [
+                    $o[4],
+                    $o[7],
+                ],
+            ],
+            'namespace' => [
+                1 => 'App\\Model',
+            ],
+            'class' => [
+                1 => 'BookListResponse',
+            ],
+            'property' => [
+                1 => 'getItems',
+            ],
+            'filename' => [
+                1 => '/Users/maratmutigullin/Desktop/scool/bookstore/src/Model/BookListResponse.php',
+            ],
+            'logger' => [
+                1 => $o[2],
+                5 => $o[2],
+            ],
+            'annotations' => [
+                1 => [
+                    $o[3],
+                    $o[4],
+                    $o[6],
+                    $o[7],
+                    $o[0],
+                ],
+            ],
+            'ref' => [
+                4 => $o[3],
+                7 => $o[6],
+            ],
+            'nested' => [
+                5 => $o[0],
+            ],
+        ],
+        'OpenApi\\Context' => [
+            'parent' => [
+                5 => $o[1],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+    ],
+    []
+); }];

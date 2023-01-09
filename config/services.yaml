@@ -7,6 +7,8 @@ parameters:
     exceptions:
         #App\Exeption\BookCategoryNotFoundExeption: {code: 404, hidden: false, loggable: false }
         App\Exception\BookCategoryNotFoundException: {code: 404, hidden: false}
+        App\Exception\SubscriberEmailExistsExeption: {code: 409, hidden: false}
+        App\Exception\RequestBodyConvertException: {code: 400, hidden: false}
 # hidden означает что сообщение об ошибке не скрываем а отдаем пользователю
 # loggable определяет стоит ли логировать сообщение об ошибке или нет
 services:
@@ -35,3 +37,6 @@ services:
     App\Listener\ApiExeptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, priority: 10 }
+    App\Listener\ValidationExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, priority: 15 }

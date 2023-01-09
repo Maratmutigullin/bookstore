@@ -3,7 +3,8 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
-
+/var/
+/vendor/
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache

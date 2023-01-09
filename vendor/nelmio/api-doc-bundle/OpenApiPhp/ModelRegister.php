@@ -160,11 +160,11 @@ final class ModelRegister
     ) {
         switch ($type) {
             case 'json':
-                $modelAnnotation = Util::createChild($annotation, OA\JsonContent::class, $properties);
+                $modelAnnotation = new OA\JsonContent($properties);
 
                 break;
             case 'xml':
-                $modelAnnotation = Util::createChild($annotation, OA\XmlContent, $properties);
+                $modelAnnotation = new OA\XmlContent($properties);
 
                 break;
             default:

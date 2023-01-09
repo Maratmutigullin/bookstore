@@ -78,6 +78,14 @@ return [[
 '[C]App%5CController%5CBookController%23booksByCategory' => 1,
 'App%5CController%5CBookController%24bookService' => 0,
 '[C]App%5CController%5CBookController%24bookService' => 1,
+'App%5CController%5CSubscribeController' => 0,
+'[C]App%5CController%5CSubscribeController' => 1,
+'App%5CController%5CSubscribeController%23__construct' => 0,
+'[C]App%5CController%5CSubscribeController%23__construct' => 1,
+'App%5CController%5CSubscribeController%23action' => 4,
+'[C]App%5CController%5CSubscribeController%23action' => 1,
+'App%5CController%5CSubscribeController%24subscriberService' => 0,
+'[C]App%5CController%5CSubscribeController%24subscriberService' => 1,
 'App%5CEntity%5CBook' => 0,
 '[C]App%5CEntity%5CBook' => 1,
 'App%5CEntity%5CBook%23__construct' => 0,
@@ -146,6 +154,26 @@ return [[
 '[C]App%5CEntity%5CBookCategory%24title' => 1,
 'App%5CEntity%5CBookCategory%24slug' => 0,
 '[C]App%5CEntity%5CBookCategory%24slug' => 1,
+'App%5CEntity%5CSubscriber' => 0,
+'[C]App%5CEntity%5CSubscriber' => 1,
+'App%5CEntity%5CSubscriber%23setCreatedAtValue' => 0,
+'[C]App%5CEntity%5CSubscriber%23setCreatedAtValue' => 1,
+'App%5CEntity%5CSubscriber%23getId' => 0,
+'[C]App%5CEntity%5CSubscriber%23getId' => 1,
+'App%5CEntity%5CSubscriber%23getEmail' => 0,
+'[C]App%5CEntity%5CSubscriber%23getEmail' => 1,
+'App%5CEntity%5CSubscriber%23setEmail' => 0,
+'[C]App%5CEntity%5CSubscriber%23setEmail' => 1,
+'App%5CEntity%5CSubscriber%23getCreatedAt' => 0,
+'[C]App%5CEntity%5CSubscriber%23getCreatedAt' => 1,
+'App%5CEntity%5CSubscriber%23setCreatedAt' => 0,
+'[C]App%5CEntity%5CSubscriber%23setCreatedAt' => 1,
+'App%5CEntity%5CSubscriber%24id' => 0,
+'[C]App%5CEntity%5CSubscriber%24id' => 1,
+'App%5CEntity%5CSubscriber%24email' => 0,
+'[C]App%5CEntity%5CSubscriber%24email' => 1,
+'App%5CEntity%5CSubscriber%24createdAt' => 0,
+'[C]App%5CEntity%5CSubscriber%24createdAt' => 1,
 'Doctrine%5CBundle%5CDoctrineBundle%5CController%5CProfilerController' => 0,
 '[C]Doctrine%5CBundle%5CDoctrineBundle%5CController%5CProfilerController' => 1,
 'Doctrine%5CBundle%5CDoctrineBundle%5CController%5CProfilerController%23__construct' => 0,
@@ -670,7 +698,7 @@ return [[
 ], [
 
 0 => [],
-1 => 1666526911,
+1 => 1671602969,
 2 => static function () {
     return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
         $o = [
@@ -842,6 +870,77 @@ return [[
         [
             $o[0],
             $o[6],
+        ],
+        []
+    );
+},
+4 => static function () {
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['OpenApi\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Annotations\\Response')),
+            clone ($p['Nelmio\\ApiDocBundle\\Annotation\\Model'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Nelmio\\ApiDocBundle\\Annotation\\Model')),
+            clone ($p['OpenApi\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Context')),
+            clone ($p['OpenApi\\Loggers\\DefaultLogger'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('OpenApi\\Loggers\\DefaultLogger')),
+            clone $p['OpenApi\\Context'],
+            clone $p['OpenApi\\Loggers\\DefaultLogger'],
+        ],
+        null,
+        [
+            'stdClass' => [
+                'attachables' => [
+                    [
+                        $o[1],
+                    ],
+                ],
+                '_context' => [
+                    $o[4],
+                    $o[2],
+                ],
+                'response' => [
+                    200,
+                ],
+                'description' => [
+                    'Subscribe email to newsletter moiling list',
+                ],
+                'type' => [
+                    1 => 'ErrorResponse',
+                ],
+                'logger' => [
+                    2 => $o[3],
+                    4 => $o[5],
+                ],
+                'filename' => [
+                    2 => '/Users/maratmutigullin/Desktop/scool/bookstore/vendor/zircote/swagger-php/src/Attributes/Attachable.php',
+                    4 => '/Users/maratmutigullin/Desktop/scool/bookstore/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                ],
+                'line' => [
+                    2 => 14,
+                    4 => 1474,
+                ],
+                'method' => [
+                    2 => '__construct',
+                    4 => 'instantiateAnnotiation',
+                ],
+                'class' => [
+                    2 => 'Attachable',
+                    4 => 'DocParser',
+                ],
+                'namespace' => [
+                    2 => 'OpenApi\\Attributes',
+                    4 => 'Doctrine\\Common\\Annotations',
+                ],
+                'annotations' => [
+                    2 => [
+                        $o[1],
+                    ],
+                    4 => [
+                        $o[0],
+                    ],
+                ],
+            ],
+        ],
+        [
+            $o[0],
         ],
         []
     );
