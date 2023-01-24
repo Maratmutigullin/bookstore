@@ -11,6 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Model\BookListResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Model\ErrorResponse;
+use App\Model\BookDetails;
+
 
 class BookController extends AbstractController
 {
@@ -34,5 +36,23 @@ class BookController extends AbstractController
     public function booksByCategory(int $id): Response
     {
         return $this->json($this->bookService->getBooksByCategory($id));
+    }
+
+    /**
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns books detail information",
+     *     @Model(type=BookListResponse::class)
+     * )
+     * @OA\Response(
+     *     response="404",
+     *     description="book not found",
+     *     @Model(type=ErrorResponse::class)
+     * )
+     */
+    #[Route(path: 'api/v1/book/{id}', methods: ['GET'])]
+    public function booksById(int $id): Response
+    {
+        return $this->json($this->bookService->getBookById($id));
     }
 }

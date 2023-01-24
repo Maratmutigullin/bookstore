@@ -60,6 +60,9 @@
     <parameter key="kernel.charset">UTF-8</parameter>
     <parameter key="kernel.container_class">App_KernelDevDebugContainer</parameter>
     <parameter key="exceptions" type="collection">
+      <parameter key="Symfony\Component\HttpKernel\Exception\NotFoundHttpException" type="collection">
+        <parameter key="code">404</parameter>
+      </parameter>
       <parameter key="App\Exception\BookCategoryNotFoundException" type="collection">
         <parameter key="code">404</parameter>
         <parameter key="hidden">false</parameter>
@@ -234,6 +237,14 @@
         <argument type="service" id=".service_locator.ULv2zL4.App\Controller\BookController"/>
       </call>
     </service>
+    <service id="App\Controller\ReviewController" class="App\Controller\ReviewController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <argument type="service" id="App\Service\ReviewService"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.ULv2zL4.App\Controller\ReviewController"/>
+      </call>
+    </service>
     <service id="App\Controller\SubscribeController" class="App\Controller\SubscribeController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -252,6 +263,7 @@
       <tag name="doctrine.fixture.orm"/>
     </service>
     <service id="App\Exception\BookCategoryNotFoundException" class="App\Exception\BookCategoryNotFoundException" autowire="true" autoconfigure="true"/>
+    <service id="App\Exception\BookNotFoundException" class="App\Exception\BookNotFoundException" autowire="true" autoconfigure="true"/>
     <service id="App\Exception\RequestBodyConvertException" class="App\Exception\RequestBodyConvertException" autowire="true" autoconfigure="true"/>
     <service id="App\Exception\SubscriberEmailExistsExeption" class="App\Exception\SubscriberEmailExistsExeption" autowire="true" autoconfigure="true"/>
     <service id="App\Exception\ValidationException" class="App\Exception\ValidationException" autowire="true" autoconfigure="true"/>
@@ -266,20 +278,32 @@
       <tag name="kernel.event_listener" event="kernel.exception" priority="15"/>
       <argument type="service" id="serializer"/>
     </service>
-    <service id="App\Model\BookCategoryListItem" class="App\Model\BookCategoryListItem" autowire="true" autoconfigure="true"/>
+    <service id="App\Model\BookCategory" class="App\Model\BookCategory" autowire="true" autoconfigure="true"/>
     <service id="App\Model\BookCategoryListResponse" class="App\Model\BookCategoryListResponse" autowire="true" autoconfigure="true"/>
+    <service id="App\Model\BookDetails" class="App\Model\BookDetails" autowire="true" autoconfigure="true"/>
+    <service id="App\Model\BookFormat" class="App\Model\BookFormat" autowire="true" autoconfigure="true"/>
     <service id="App\Model\BookListItem" class="App\Model\BookListItem" autowire="true" autoconfigure="true"/>
     <service id="App\Model\BookListResponse" class="App\Model\BookListResponse" autowire="true" autoconfigure="true"/>
     <service id="App\Model\ErrorDebugDetails" class="App\Model\ErrorDebugDetails" autowire="true" autoconfigure="true"/>
     <service id="App\Model\ErrorResponse" class="App\Model\ErrorResponse" autowire="true" autoconfigure="true"/>
     <service id="App\Model\ErrorValidationDetails" class="App\Model\ErrorValidationDetails" autowire="true" autoconfigure="true"/>
     <service id="App\Model\ErrorValidationDetailsItem" class="App\Model\ErrorValidationDetailsItem" autowire="true" autoconfigure="true"/>
+    <service id="App\Model\Review" class="App\Model\Review" autowire="true" autoconfigure="true"/>
+    <service id="App\Model\ReviewPage" class="App\Model\ReviewPage" autowire="true" autoconfigure="true"/>
     <service id="App\Model\SubscriberRequest" class="App\Model\SubscriberRequest" autowire="true" autoconfigure="true"/>
     <service id="App\Repository\BookCategoryRepository" class="App\Repository\BookCategoryRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\BookRepository" class="App\Repository\BookRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\BookToBookFormatRepository" class="App\Repository\BookToBookFormatRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\ReviewRepository" class="App\Repository\ReviewRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -293,10 +317,14 @@
     <service id="App\Service\BookService" class="App\Service\BookService" autowire="true" autoconfigure="true">
       <argument type="service" id="App\Repository\BookRepository"/>
       <argument type="service" id="App\Repository\BookCategoryRepository"/>
+      <argument type="service" id="App\Repository\ReviewRepository"/>
     </service>
     <service id="App\Service\ExeptionHandler\ExeptionMapping" class="App\Service\ExeptionHandler\ExeptionMapping" autowire="true" autoconfigure="true"/>
     <service id="App\Service\ExeptionHandler\ExeptionMappingResolver" class="App\Service\ExeptionHandler\ExeptionMappingResolver" autowire="true" autoconfigure="true">
       <argument>%exceptions%</argument>
+    </service>
+    <service id="App\Service\ReviewService" class="App\Service\ReviewService" autowire="true" autoconfigure="true">
+      <argument type="service" id="App\Repository\ReviewRepository"/>
     </service>
     <service id="App\Service\SubscriberService" class="App\Service\SubscriberService" autowire="true" autoconfigure="true">
       <argument type="service" id="App\Repository\SubscriberRepository"/>
@@ -2138,7 +2166,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.Dj.DapG"/>
+      <argument type="service" id=".service_locator.x4tmJE5"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -3227,6 +3255,9 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\BookController" class="App\Controller\BookController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\BookController" class="App\Controller\BookController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\BookController" class="App\Controller\BookController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ReviewController" class="App\Controller\ReviewController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ReviewController" class="App\Controller\ReviewController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\ReviewController" class="App\Controller\ReviewController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\SubscribeController" class="App\Controller\SubscribeController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\SubscribeController" class="App\Controller\SubscribeController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\SubscribeController" class="App\Controller\SubscribeController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -3240,6 +3271,10 @@
     <service id=".abstract.instanceof.App\Repository\BookCategoryRepository" class="App\Repository\BookCategoryRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\BookRepository" class="App\Repository\BookRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\BookRepository" class="App\Repository\BookRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\BookToBookFormatRepository" class="App\Repository\BookToBookFormatRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\BookToBookFormatRepository" class="App\Repository\BookToBookFormatRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ReviewRepository" class="App\Repository\ReviewRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\ReviewRepository" class="App\Repository\ReviewRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\SubscriberRepository" class="App\Repository\SubscriberRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\SubscriberRepository" class="App\Repository\SubscriberRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.gSv9zYw" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -3671,11 +3706,13 @@
         <argument key="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber"/>
       </argument>
     </service>
-    <service id=".service_locator.Dj.DapG" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.x4tmJE5" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\BookCategoryRepository" type="service_closure" id="App\Repository\BookCategoryRepository"/>
         <argument key="App\Repository\BookRepository" type="service_closure" id="App\Repository\BookRepository"/>
+        <argument key="App\Repository\BookToBookFormatRepository" type="service_closure" id="App\Repository\BookToBookFormatRepository"/>
+        <argument key="App\Repository\ReviewRepository" type="service_closure" id="App\Repository\ReviewRepository"/>
         <argument key="App\Repository\SubscriberRepository" type="service_closure" id="App\Repository\SubscriberRepository"/>
       </argument>
     </service>
@@ -3777,6 +3814,12 @@
     <service id=".service_locator.ULv2zL4.App\Controller\BookController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\BookController"/>
       <argument>App\Controller\BookController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.ULv2zL4" method="withContext"/>
+    </service>
+    <service id=".service_locator.ULv2zL4.App\Controller\ReviewController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\ReviewController"/>
+      <argument>App\Controller\ReviewController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.ULv2zL4" method="withContext"/>
     </service>

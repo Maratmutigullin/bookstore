@@ -6,12 +6,12 @@ namespace App\Model;
 class BookCategoryListResponse
 {
     /**
-     * @var BookCategoryListItem[]
+     * @var BookCategory[]
      */
     private array $items;
 
     /**
-     * @var BookCategoryListItem[]
+     * @var BookCategory[]
      */
     public function __construct(array $items)
     {
@@ -19,7 +19,7 @@ class BookCategoryListResponse
     }
 
     /**
-     * @var BookCategoryListItem[]
+     * @var BookCategory[]
      */
     public function getItems(): array
     {

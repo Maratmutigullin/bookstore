@@ -26,6 +26,7 @@ class BookCategoryRepositoryTest extends AbstractRepositoryTest
         $devices = (new BookCategory())->setTitle('Devices')->setSlug('devices');
 
         foreach ([$devices, $android, $computer] as $category) {
+
             $this->em->persist($category);
         }
 

@@ -12,7 +12,7 @@ class BookListResponse
     private array $items;
 
     /**
-     * @var BookCategoryListItem[]
+     * @var BookCategory[]
      */
     public function __construct(array $items)
     {
@@ -20,7 +20,7 @@ class BookListResponse
     }
 
     /**
-     * @var BookCategoryListItem[]
+     * @var BookCategory[]
      */
     public function getItems(): array
     {

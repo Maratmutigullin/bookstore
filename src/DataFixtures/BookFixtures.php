@@ -20,6 +20,8 @@ class BookFixtures extends Fixture implements DependentFixtureInterface
             ->setTitle('PHP developer')
             ->setPublicationDate(new \DateTimeImmutable('2019-01-01'))
             ->setMeap(false)
+            ->setIsbn('123321')
+            ->setDescription('test description')
             ->setAutors(['Plum Island'])
             ->setSlug('php')
             ->setCategories(new ArrayCollection([$androidCategory, $devicesCategory]))

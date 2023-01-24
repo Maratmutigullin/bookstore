@@ -15,12 +15,20 @@ return [
     ],
     [ // $regexpList
         0 => '{^(?'
-                .'|/api/v1/category/([^/]++)/books(*:38)'
+                .'|/api/v1/(?'
+                    .'|category/([^/]++)/books(*:41)'
+                    .'|book/([^/]++)(?'
+                        .'|(*:64)'
+                        .'|/reviews(*:79)'
+                    .')'
+                .')'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
-        38 => [
-            [['_route' => 'app_book_booksbycategory', '_controller' => 'App\\Controller\\BookController::booksByCategory'], ['id'], ['GET' => 0], null, false, false, null],
+        41 => [[['_route' => 'app_book_booksbycategory', '_controller' => 'App\\Controller\\BookController::booksByCategory'], ['id'], ['GET' => 0], null, false, false, null]],
+        64 => [[['_route' => 'app_book_booksbyid', '_controller' => 'App\\Controller\\BookController::booksById'], ['id'], ['GET' => 0], null, false, true, null]],
+        79 => [
+            [['_route' => 'app_review_reviews', '_controller' => 'App\\Controller\\ReviewController::reviews'], ['id'], ['GET' => 0], null, false, false, null],
             [null, null, null, null, false, false, 0],
         ],
     ],
