@@ -40,11 +40,6 @@ class BookDetails
      */
     private array $formats;
 
-    /**
-     * @var RecommendedBook []
-     */
-    private array $recommendations;
-
     public function getId(): int
     {
         return $this->id;
@@ -165,23 +160,4 @@ class BookDetails
         $this->formats = $formats;
         return $this;
     }
-
-    /**
-     * @return RecommendedBook[]
-     */
-    public function getRecommendations(): array
-    {
-        return $this->recommendations;
-    }
-
-    /**
-     * @param RecommendedBook[] $recommendations
-     */
-    public function setRecommendations(array $recommendations): self
-    {
-        $this->recommendations = $recommendations;
-
-        return $this;
-    }
-
 }

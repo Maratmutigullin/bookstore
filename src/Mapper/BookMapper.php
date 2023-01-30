@@ -5,7 +5,6 @@ namespace App\Mapper;
 use App\Entity\Book;
 use App\Model\BookDetails;
 use App\Model\BookListItem;
-use App\Model\RecommendedBook;
 
 class BookMapper
 {
@@ -21,15 +20,4 @@ class BookMapper
             ->setPublicationDate($book->getPublicationDate()->getTimestamp());
     }
 
-    public static function mapRecommended(Book $book): RecommendedBook
-    {
-        $description = $book->getDescription();
-        $description = strlen($description) > 150 ? substr($description, 0, 150) . '...' : $description;
-        return (new RecommendedBook())
-            ->setId($book->getId())
-            ->setImage($book->getImage())
-            ->setTitle($book->getTitle())
-            ->setSlug($book->getSlug())
-            ->setShortDescription($description);
-    }
 }

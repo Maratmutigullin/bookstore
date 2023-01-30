@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230129160929 extends AbstractMigration
+final class Version20230130170857 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,6 @@ final class Version20230129160929 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP SEQUENCE book_category_id_seq1 CASCADE');
-        $this->addSql('CREATE SEQUENCE book_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE book_format_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE book_to_book_format_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE review_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE subscriber_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE book (id INT NOT NULL, title VARCHAR(255) NOT NULL, slug VARCHAR(255) DEFAULT NULL, image VARCHAR(255) NOT NULL, autors TEXT NOT NULL, publication_date DATE DEFAULT NULL, meap BOOLEAN DEFAULT false NOT NULL, isbn VARCHAR(13) NOT NULL, description TEXT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN book.autors IS \'(DC2Type:simple_array)\'');
         $this->addSql('COMMENT ON COLUMN book.publication_date IS \'(DC2Type:date_immutable)\'');
@@ -52,12 +46,7 @@ final class Version20230129160929 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP SEQUENCE book_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE book_format_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE book_to_book_format_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE review_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE subscriber_id_seq CASCADE');
-        $this->addSql('CREATE SEQUENCE book_category_id_seq1 INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE book_to_book_category DROP CONSTRAINT FK_57511BE216A2B381');
         $this->addSql('ALTER TABLE book_to_book_category DROP CONSTRAINT FK_57511BE240B1D29E');
         $this->addSql('ALTER TABLE book_to_book_format DROP CONSTRAINT FK_D02DE22216A2B381');

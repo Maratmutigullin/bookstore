@@ -12,7 +12,7 @@ class RecommendationItem
 
     public function getId(): int
     {
-        return $this->is;
+        return $this->id;
     }
 
 }

@@ -66,7 +66,6 @@ class BookRepository extends ServiceEntityRepository
      */
     public function findBooksByIds(array $ids): array
     {
-        dump($ids);die();
         return $this->findBy(['id' => $ids]);
     }
 }
