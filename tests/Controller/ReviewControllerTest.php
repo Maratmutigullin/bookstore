@@ -15,6 +15,7 @@ class ReviewControllerTest extends AbstractControllerTest
     public function testReviews(): void
     {
         $book = $this->createBook();
+
         $this->createReview($book);
 
         $this->em->flush();

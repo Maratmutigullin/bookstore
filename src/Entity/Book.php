@@ -68,6 +68,15 @@ class Book
         $this->reviews = new ArrayCollection();
     }
 
+    /**
+     * @param int|null $id
+     * @return Book
+     */
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;
