@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
-
+use App\Model\ErrorResponse;
 
 class SubscribeController extends AbstractController
 {
@@ -21,6 +21,11 @@ class SubscribeController extends AbstractController
      * @OA\Response(
      *     response=200,
      *     description="Subscribe email to newsletter moiling list",
+     * )
+     * @OA\Response(
+     *     response=409,
+     *     description="Validation failed",
+     *     @Model(type=ErrorResponse::class)
      * )
      * @OA\RequestBody(@Model(type=SubscriberRequest::class))
      */
