@@ -6,12 +6,15 @@ use App\Model\ErrorDebugDetails;
 use App\Model\ErrorResponse;
 use App\Service\ExeptionHandler\ExeptionMapping;
 use App\Service\ExeptionHandler\ExeptionMappingResolver;
+use App\Service\Recommendation\Exception\AccessDeniedException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Throwable;
 
 class ApiExeptionListener
 {
@@ -26,6 +29,11 @@ class ApiExeptionListener
     public function __invoke(ExceptionEvent $event): void
     {
         $throwable = $event->getThrowable();
+        if($this->isSecurityException($throwable)){
+            return ;
+        }
+
+
         $mapping = $this->resolver->resolve(get_class($throwable));
         if (null === $mapping) {
             $mapping = ExeptionMapping::fromCode(Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -53,5 +61,9 @@ class ApiExeptionListener
         $event->setResponse($response);
     }
 
+    public function isSecurityException(Throwable $throwable): bool
+    {
+        return $throwable instanceof AuthenticationException || $throwable instanceof AccessDeniedException;
+    }
 
 }

@@ -17,16 +17,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id;
 
     #[ORM\Column(type: 'string')]
-    private $firstName;
+    private string $firstName;
 
     #[ORM\Column(type: 'string')]
-    private $lastName;
+    private string $lastName;
 
     #[ORM\Column(type: 'string', unique: true)]
-    private $email;
+    private string $email;
 
     #[ORM\Column(type: 'string')]
-    private $password;
+    private string $password;
+
+    #[ORM\Column(type: 'simple_array')]
+    private array $roles;
 
     public function getId(): ?int
     {
@@ -79,10 +82,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
 
     public function getRoles()
     {
-        return [];
+        return $this->roles;
     }
 
 
@@ -101,9 +111,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function getUserIdentifier(): ?int
+    public function getUserIdentifier(): string
     {
-        return $this->id;
+        return $this->email;
     }
 
 //    public function __call(string $name, array $arguments)
