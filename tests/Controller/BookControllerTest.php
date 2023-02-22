@@ -131,7 +131,8 @@ class BookControllerTest extends AbstractControllerTest
 
         $this->em->persist($book);
         $join = (new BookToBookFormat())
-            ->setPrice($format)
+            ->setPrice(5.5)
+            ->setFormat($format)
             ->setDiscountPercent(5)
             ->setBook($book);
 

@@ -12,6 +12,7 @@ parameters:
         App\Exception\UserAlreadyExistsException: {code: 409, hidden: false}
         App\Exception\RequestBodyConvertException: {code: 400, hidden: false}
         App\Exception\BookNotFoundException: {code: 404, hidden: false}
+        App\Exception\UserNotFoundException: {code: 404, hidden: false}
 # hidden означает что сообщение об ошибке не скрываем а отдаем пользователю
 # loggable определяет стоит ли логировать сообщение об ошибке или нет
 services:
