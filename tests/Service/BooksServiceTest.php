@@ -62,7 +62,7 @@ class BooksServiceTest extends AbstractTestCase
     public function testGetBooksByCategory(): void
     {
         $this->bookRepository->expects($this->once())
-            ->method('findBooksByCategoryId')
+            ->method('findPublishedBooksByCategoryId')
             ->with(130)
             ->willReturn([$this->createBookEntity()]);
 
@@ -79,7 +79,7 @@ class BooksServiceTest extends AbstractTestCase
     public function testGetBooKById(): void
     {
         $this->bookRepository->expects($this->once())
-            ->method('getById')
+            ->method('getPublishedById')
             ->with(123)
             ->willReturn($this->createBookEntity());
 

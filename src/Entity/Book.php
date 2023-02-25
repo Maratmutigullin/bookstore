@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -23,10 +24,10 @@ class Book
     private ?string $slug;
 
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $image;
 
-    #[ORM\Column(type: 'simple_array')]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $autors;
 
     #[ORM\Column(type: 'date_immutable', nullable: true)]
@@ -37,17 +38,24 @@ class Book
     private bool $meap;
 
     /**
+     * @var UserInterface
+     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private UserInterface $user;
+
+    /**
      * @var Collection<BookCategory>
      */
     #[ORM\ManyToMany(targetEntity: BookCategory::class)]
     #[ORM\JoinTable(name: 'book_to_book_category')]
     private Collection $categories;
 
-    #[ORM\Column(type: 'string' ,length: 13)]
-    private $isbn;
+    #[ORM\Column(type: 'string' ,length: 13, nullable: true)]
+    private ?string $isbn;
 
-    #[ORM\Column(type: 'text')]
-    private $description;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description;
 
     /**
      * @var Collection<BookToBookFormat>
@@ -134,7 +142,7 @@ class Book
     }
 
 
-    public function getPublicationDate(): \DateTimeInterface
+    public function getPublicationDate(): ?\DateTimeInterface
     {
         return $this->publicationDate;
     }
@@ -172,25 +180,25 @@ class Book
     }
 
 
-    public function getIsbn()
+    public function getIsbn(): ?string
     {
         return $this->isbn;
     }
 
-    public function setIsbn($isbn): self
+    public function setIsbn(?string $isbn): self
     {
         $this->isbn = $isbn;
         return $this;
     }
 
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
 
-    public function setDescription($description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
         return $this;
@@ -215,6 +223,19 @@ class Book
     public function setReviews(ArrayCollection|Collection $reviews): self
     {
         $this->reviews = $reviews;
+        return $this;
+    }
+
+
+    public function getUser(): UserInterface
+    {
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
+
         return $this;
     }
 
