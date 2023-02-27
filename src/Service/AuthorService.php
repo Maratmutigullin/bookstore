@@ -7,9 +7,13 @@ use App\Exception\BookAlreadyExistsException;
 use App\Model\Author\BookListItem;
 use App\Model\Author\BookListResponse;
 use App\Model\Author\CreateBookRequest;
+use App\Model\Author\PublishBookRequest;
+use App\Model\Author\UploadCoverResponse;
 use App\Model\IdResponse;
 use App\Repository\BookRepository;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -19,11 +23,23 @@ class AuthorService
         private EntityManagerInterface $em,
         private BookRepository $bookRepository,
         private SluggerInterface $slugger,
-        private Security $security
+        private Security $security,
+        private UploadService $uploadService
     )
     {
     }
 
+    //ставим книгу на публикацию
+    public function publish(int $id, PublishBookRequest $publishBookRequest): void
+    {
+        $this->setPublicationDate($id, $publishBookRequest->getDate());
+    }
+
+    //снятие книги с публикации
+    public function unpublish(int $id): void
+    {
+        $this->setPublicationDate($id, null);
+    }
     //поиск книги автором
     public function getBooks(): BookListResponse
     {
@@ -72,5 +88,26 @@ class AuthorService
         $this->em->flush();
 
         return new IdResponse($book->getId());
+    }
+
+    public function setPublicationDate(int $id, ?DateTimeInterface $datetime): void
+    {
+        $book = $this->bookRepository->getUserBookById($id, $this->security->getUser());
+        $book->setPublicationDate($datetime);
+        $this->em->flush();
+    }
+
+    public function uploadCover(int $id, UploadedFile $file): UploadCoverResponse
+    {
+        $book = $this->bookRepository->getUserBookById($id, $this->security->getUser());
+        $link = $this->uploadService->uploadBookFile($id, $file);
+
+        $book->setImage($link);
+
+        $this->em->flush();
+        if(null !== $book->getImage()) {
+            $this->uploadService->deleteBookFile($book->getId(), basename($book->getImage()));
+        }
+        return new UploadCoverResponse($link);
     }
 }

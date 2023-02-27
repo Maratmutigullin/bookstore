@@ -2,7 +2,7 @@
 namespace App\Tests\ArgumentResolver;
 
 use App\ArgumentResolver\RequestBodyArgumentResolver;
-use App\Atribute\RequestBody;
+use App\Attribute\RequestBody;
 use App\Exception\RequestBodyConvertException;
 use App\Exception\ValidationException;
 use App\Tests\AbstractTestCase;

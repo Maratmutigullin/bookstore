@@ -2,7 +2,7 @@
 
 namespace App\ArgumentResolver;
 
-use App\Atribute\RequestBody;
+use App\Attribute\RequestBody;
 use App\Exception\RequestBodyConvertException;
 use App\Exception\ValidationException;
 use Generator;

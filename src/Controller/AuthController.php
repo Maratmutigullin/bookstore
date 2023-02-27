@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Atribute\RequestBody;
+use App\Attribute\RequestBody;
 use App\Model\SignUpRequest;
 use App\Service\SignUpService;
 use OpenApi\Annotations as OA;

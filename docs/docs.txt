@@ -1,0 +1,8 @@
+ренистрация
+curl -XPOST -H 'Content-Type: application/json' http://localhost:8000/api/v1/auth/signUp --data
+'{"firstName": "tester", "lastName": "testerov", "email": "testr@mail.ru", "password": "testtest",
+"confirmPassword": "testtest"}' -v
+
+
+
+

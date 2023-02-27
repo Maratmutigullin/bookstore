@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\Atribute\RequestBody;
+use App\Attribute\RequestBody;
 use App\Model\SubscriberRequest;
 use App\Service\SubscriberService;
 use OpenApi\Annotations as OA;
