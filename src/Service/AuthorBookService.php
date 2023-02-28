@@ -3,14 +3,21 @@
 namespace App\Service;
 
 use App\Entity\Book;
+use App\Entity\BookToBookFormat;
 use App\Exception\BookAlreadyExistsException;
+use App\Mapper\BookMapper;
+use App\Model\Author\BookDetails;
+use App\Model\Author\BookFormatOptions;
 use App\Model\Author\BookListItem;
 use App\Model\Author\BookListResponse;
 use App\Model\Author\CreateBookRequest;
+use App\Model\Author\UpdateBookRequest;
 use App\Model\Author\UploadCoverResponse;
 use App\Model\IdResponse;
+use App\Repository\BookCategoryRepository;
+use App\Repository\BookFormatRepository;
 use App\Repository\BookRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -18,8 +25,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class AuthorBookService
 {
     public function __construct(
-        private EntityManagerInterface $em,
         private BookRepository $bookRepository,
+        private BookFormatRepository $bookFormatRepository,
+        private BookCategoryRepository $bookCategoryRepository,
         private SluggerInterface $slugger,
         private UploadService $uploadService
     )
@@ -48,27 +56,19 @@ class AuthorBookService
     {
         $book = $this->bookRepository->getBookById($id);
 
-        $this->em->remove($book);
-        $this->em->flush();
+        $this->bookRepository->removeAndCommit($book);
     }
 
     public function createBook(CreateBookRequest $request, UserInterface $user): IdResponse
     {
-        //генерируем slug
-        $slug = $this->slugger->slug($request->getTitle());
-
-        if ($this->bookRepository->existsBySlug($slug)) {
-            throw new BookAlreadyExistsException();
-        }
-
+        $slug = $this->slugifyOfThrow($request->getTitle());
         $book = (new Book())
             ->setTitle($request->getTitle())
             ->setMeap(false)
             ->setSlug($slug)
             ->setUser($user);
 
-        $this->em->persist($book);
-        $this->em->flush();
+        $this->bookRepository->saveAndCommit($book);
 
         return new IdResponse($book->getId());
     }
@@ -80,11 +80,72 @@ class AuthorBookService
         $link = $this->uploadService->uploadBookFile($id, $file);
 
         $book->setImage($link);
+        $this->bookRepository->commit();
 
-        $this->em->flush();
-        if(null !== $oldImage) {
+        if (null !== $oldImage) {
             $this->uploadService->deleteBookFile($book->getId(), basename($oldImage));
         }
         return new UploadCoverResponse($link);
     }
+
+    public function getBook(int $id): BookDetails
+    {
+        $book = $this->bookRepository->getBookById($id);
+
+        $bookDetails = (new BookDetails())
+            ->setIsbn($book->getIsbn())
+            ->setFormats(BookMapper::mapFormats($book))
+            ->setDescription($book->getDescription())
+            ->setCategories(BookMapper::mapCategories($book));
+
+        return BookMapper::map($book, $bookDetails);
+    }
+
+    //метод для получения slug
+    private function slugifyOfThrow(string $title): string
+    {
+        //генерируем slug
+        $slug = $this->slugger->slug($title);
+
+        if ($this->bookRepository->existsBySlug($slug)) {
+            throw new BookAlreadyExistsException();
+        }
+
+        return $slug;
+    }
+
+    public function updateBook(int $id, UpdateBookRequest $updateBookRequest)
+    {
+        $book = $this->bookRepository->getBookById($id);
+        $title = $updateBookRequest->getTitle();
+        if (!empty($title)) {
+            $book->setTitle($title)->setSlug($this->slugifyOfThrow($title));
+        }
+        $formats = array_map(function (BookFormatOptions $options) use ($book): BookToBookFormat {
+            $format = (new BookToBookFormat())
+                ->setPrice($options->getPrice())
+                ->setDiscountPercent($options->getDiscountPercent())
+                ->setBook($book)
+                ->setFormat($this->bookFormatRepository->getById($options->getId()));
+
+            $this->bookRepository->saveBookFormatReference($format);
+            return $format;
+        }, $updateBookRequest->getFormats());
+
+        //удаляем старые форматы
+        foreach ($book->getFormats() as $format) {
+            $this->bookRepository->removeBookFormatReference($format);
+        }
+
+        $book->setAutors($updateBookRequest->getAuthors())
+            ->setDescription($updateBookRequest->getDescription())
+            ->setIsbn($updateBookRequest->getIsbn())
+            ->setCategories(new ArrayCollection(
+                $this->bookCategoryRepository->findBookCategoriesByIds($updateBookRequest->getCategories())
+            ))
+            ->setFormats(new ArrayCollection($formats));
+
+        $this->bookRepository->commit();
+    }
+
 }

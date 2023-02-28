@@ -23,23 +23,23 @@ class BookCategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, BookCategory::class);
     }
 
-    public function save(BookCategory $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
+//    public function save(BookCategory $entity, bool $flush = false): void
+//    {
+//        $this->getEntityManager()->persist($entity);
+//
+//        if ($flush) {
+//            $this->getEntityManager()->flush();
+//        }
+//    }
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(BookCategory $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+//    public function remove(BookCategory $entity, bool $flush = false): void
+//    {
+//        $this->getEntityManager()->remove($entity);
+//
+//        if ($flush) {
+//            $this->getEntityManager()->flush();
+//        }
+//    }
 
     /**
      * @return BookCategory[]
@@ -73,6 +73,42 @@ class BookCategoryRepository extends ServiceEntityRepository
     public function existsBySlug(string $slug): bool
     {
         return null !== $this->findOneBy(['slug' => $slug]);
+    }
+
+    public function save($bookCategory): void
+    {
+        $this->_em->persist($bookCategory);
+    }
+
+    public function commit(): void
+    {
+        $this->_em->flush();
+    }
+
+    public function saveAndCommit($bookCategory): void
+    {
+        $this->save($bookCategory);
+        $this->commit();
+    }
+
+    public function remove($bookCategory): void
+    {
+        $this->_em->remove($bookCategory);
+    }
+
+    public function removeAndCommit($bookCategory): void
+    {
+        $this->remove($bookCategory);
+        $this->commit();
+    }
+
+    /**
+     * @param array $ids
+     * @return BookCategory[]
+     */
+    public function findBookCategoriesByIds(array $ids): array
+    {
+        return $this->findBy(['id' => $ids]);
     }
 
 }

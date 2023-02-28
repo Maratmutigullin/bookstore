@@ -11,14 +11,12 @@ use App\Model\BookCategoryListResponse;
 use App\Model\BookCategoryUpdateRequest;
 use App\Model\IdResponse;
 use App\Repository\BookCategoryRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class BookCategoryService
 {
     public function __construct(
         private BookCategoryRepository $bookCategoryRepository,
-        private EntityManagerInterface $em,
         private SluggerInterface $slugger)
     {
 
@@ -44,8 +42,8 @@ class BookCategoryService
         if ($bookscount > 0) {
             throw new BookCategoryNotEmptyException($bookscount);
         }
-        $this->em->remove($category);
-        $this->em->flush();
+
+        $this->bookCategoryRepository->removeAndCommit($category);
     }
 
     //создание категории
@@ -69,8 +67,7 @@ class BookCategoryService
             throw new BookCategoryAlreadyExistsException();
         }
         $category->setTitle($updateRequest->getTitle())->setSlug($slug);
-        $this->em->persist($category);
-        $this->em->flush();
+        $this->bookCategoryRepository->saveAndCommit($category);
     }
 
 }

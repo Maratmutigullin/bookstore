@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Exception\UserAlreadyExistsException;
 use App\Model\SignUpRequest;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -16,7 +15,6 @@ class SignUpService
     public function __construct(
         private UserPasswordHasherInterface $userPasswordHasher,
         private UserRepository $userRepository,
-        private EntityManagerInterface $em,
         private AuthenticationSuccessHandler $successHandler)
     {
     }
@@ -34,9 +32,7 @@ class SignUpService
             ->setEmail($signUpRequest->getEmail());
 
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $signUpRequest->getPassword()));
-
-        $this->em->persist($user);
-        $this->em->flush();
+        $this->userRepository->saveAndCommit($user);
 
         return $this->successHandler->handleAuthenticationSuccess($user);
     }
