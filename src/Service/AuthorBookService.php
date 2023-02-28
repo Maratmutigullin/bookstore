@@ -7,43 +7,28 @@ use App\Exception\BookAlreadyExistsException;
 use App\Model\Author\BookListItem;
 use App\Model\Author\BookListResponse;
 use App\Model\Author\CreateBookRequest;
-use App\Model\Author\PublishBookRequest;
 use App\Model\Author\UploadCoverResponse;
 use App\Model\IdResponse;
 use App\Repository\BookRepository;
-use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class AuthorService
+class AuthorBookService
 {
     public function __construct(
         private EntityManagerInterface $em,
         private BookRepository $bookRepository,
         private SluggerInterface $slugger,
-        private Security $security,
         private UploadService $uploadService
     )
     {
     }
 
-    //ставим книгу на публикацию
-    public function publish(int $id, PublishBookRequest $publishBookRequest): void
-    {
-        $this->setPublicationDate($id, $publishBookRequest->getDate());
-    }
-
-    //снятие книги с публикации
-    public function unpublish(int $id): void
-    {
-        $this->setPublicationDate($id, null);
-    }
     //поиск книги автором
-    public function getBooks(): BookListResponse
+    public function getBooks(UserInterface $user): BookListResponse
     {
-        $user = $this->security->getUser();
         return (new BookListResponse(
             array_map([$this, 'map'], $this->bookRepository->findUserBooks($user))
         ));
@@ -61,14 +46,13 @@ class AuthorService
     //удаление книги автором
     public function deleteBookById(int $id): void
     {
-        $user = $this->security->getUser();
-        $book = $this->bookRepository->getUserBookById($id, $user);
+        $book = $this->bookRepository->getBookById($id);
 
         $this->em->remove($book);
         $this->em->flush();
     }
 
-    public function createBook(CreateBookRequest $request): IdResponse
+    public function createBook(CreateBookRequest $request, UserInterface $user): IdResponse
     {
         //генерируем slug
         $slug = $this->slugger->slug($request->getTitle());
@@ -77,7 +61,6 @@ class AuthorService
             throw new BookAlreadyExistsException();
         }
 
-        $user = $this->security->getUser();
         $book = (new Book())
             ->setTitle($request->getTitle())
             ->setMeap(false)
@@ -90,23 +73,17 @@ class AuthorService
         return new IdResponse($book->getId());
     }
 
-    public function setPublicationDate(int $id, ?DateTimeInterface $datetime): void
-    {
-        $book = $this->bookRepository->getUserBookById($id, $this->security->getUser());
-        $book->setPublicationDate($datetime);
-        $this->em->flush();
-    }
-
     public function uploadCover(int $id, UploadedFile $file): UploadCoverResponse
     {
-        $book = $this->bookRepository->getUserBookById($id, $this->security->getUser());
+        $book = $this->bookRepository->getBookById($id);
+        $oldImage = $book->getImage();
         $link = $this->uploadService->uploadBookFile($id, $file);
 
         $book->setImage($link);
 
         $this->em->flush();
-        if(null !== $book->getImage()) {
-            $this->uploadService->deleteBookFile($book->getId(), basename($book->getImage()));
+        if(null !== $oldImage) {
+            $this->uploadService->deleteBookFile($book->getId(), basename($oldImage));
         }
         return new UploadCoverResponse($link);
     }

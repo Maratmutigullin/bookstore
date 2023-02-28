@@ -4,5 +4,6 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:8000/api/v1/aut
 "confirmPassword": "testtest"}' -v
 
 
+curl -XPOST "http://localhost:8000/api/v1/author/book/24/uploadCover" -F 'cover=@/Users/user_name/Desktop/images/dog_chester.jpeg' -H 'Authorization: Bearer токен'
 
 

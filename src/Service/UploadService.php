@@ -25,7 +25,7 @@ class UploadService
         //переименовываем файл
         $uniqueName = Uuid::v4()->toRfc4122() . '.' . $extension;
         //папка
-        $uploadPath = $this->getUloadPathForBook($bookId);
+        $uploadPath = $this->getUploadPathForBook($bookId);
         //перемещаем файл
         $file->move($uploadPath, $uniqueName);
 
@@ -34,10 +34,9 @@ class UploadService
 
     public function deleteBookFile(int $id, string $fileName): void
     {
-        $this->fs->remove($this->uploadDir . DIRECTORY_SEPARATOR . 'book' . DIRECTORY_SEPARATOR . $fileName);
-    }
+        $this->fs->remove($this->getUploadPathForBook($id).DIRECTORY_SEPARATOR.$fileName);    }
 
-    public function getUloadPathForBook(int $id): string
+    public function getUploadPathForBook(int $id): string
     {
         return $this->uploadDir . DIRECTORY_SEPARATOR . 'book' . DIRECTORY_SEPARATOR . $id;
     }

@@ -5,7 +5,10 @@ namespace App\Controller;
 use App\Attribute\RequestBody;
 use App\Attribute\RequestFile;
 use App\Model\Author\CreateBookRequest;
-use App\Service\AuthorService;
+use App\Security\Voter\AuthorBookVoter;
+use App\Service\AuthorBookService;
+use App\Service\BookPublishService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,14 +19,14 @@ use App\Model\Author\PublishBookRequest;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Model\ErrorResponse;
 use App\Model\IdResponse;
-use Symfony\Component\Validator\Constraints\Image;
-use Symfony\Component\Validator\Constraints\NotNull;
 use App\Model\Author\UploadCoverResponse;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class AuthorController extends AbstractController
 {
 
-    public function __construct(private AuthorService $authorService)
+    public function __construct(private AuthorBookService $authorService, private BookPublishService $bookPublishService)
     {
     }
 
@@ -36,9 +39,11 @@ class AuthorController extends AbstractController
      * )
      */
     #[Route(path: 'api/v1/author/books', methods: ['GET'])]
-    public function books(): Response
+    public function books(#[CurrentUser] UserInterface $user): Response
     {
-        return $this->json($this->authorService->getBooks());
+        //аннотация #[CurrentUser] позволяет достать User из запроса
+        //если все норм срабатывает AuthorBookVoter
+        return $this->json($this->authorService->getBooks($user));
     }
 
     /**
@@ -50,9 +55,10 @@ class AuthorController extends AbstractController
      * @OA\RequestBody(@Model(type=PublishBookRequest::class))
      */
     #[Route(path: '/api/v1/author/book/{id}/publish', methods: ['POST'])]
+    #[IsGranted(AuthorBookVoter::IS_AUTHOR, subject: 'id')]
     public function publish(int $id, #[RequestBody] PublishBookRequest $request): Response
     {
-        $this->authorService->publish($id, $request);
+        $this->bookPublishService->publish($id, $request);
         return $this->json(null);
     }
 
@@ -67,7 +73,7 @@ class AuthorController extends AbstractController
     #[Route(path: '/api/v1/author/book/{id}/unpublish', methods: ['POST'])]
     public function unpublish(int $id): Response
     {
-        $this->authorService->unpublish($id);
+        $this->bookPublishService->unpublish($id);
         return $this->json(null);
     }
 
@@ -87,9 +93,9 @@ class AuthorController extends AbstractController
      * @OA\RequestBody(@Model(type=CreateBookRequest::class))
      */
     #[Route(path: '/api/v1/author/book', methods: ['POST'])]
-    public function createBook(#[RequestBody] CreateBookRequest $request): Response
+    public function createBook(#[RequestBody] CreateBookRequest $request, #[CurrentUser] UserInterface $user): Response
     {
-        return $this->json($this->authorService->createBook($request));
+        return $this->json($this->authorService->createBook($request, $user));
     }
 
     /**
@@ -106,6 +112,7 @@ class AuthorController extends AbstractController
      * )
      */
     #[Route(path: 'api/v1/author/book/{id}', methods: ['DELETE'])]
+    #[IsGranted(AuthorBookVoter::IS_AUTHOR, subject: 'id')]
     public function deleteBook(int $id): Response
     {
         $this->authorService->deleteBookById($id);
@@ -129,11 +136,12 @@ class AuthorController extends AbstractController
      * @return Response
      */
     #[Route(path: '/api/v1/author/book/{id}/uploadCover', methods: ['POST'])]
+    #[IsGranted(AuthorBookVoter::IS_AUTHOR, subject: 'id')]
     public function uploadCover(
         int $id,
         #[RequestFile(field: 'cover', constraints: [
-            new NotNull(),
-            new Image(maxSize: '1M', mimeTypes: ['image/jpeg', 'image/png', 'image/jpg'])
+           // new NotNull(),
+           // new Image(maxSize: '1M', mimeTypes: ['image/jpeg', 'image/png', 'image/jpg'])
         ])] UploadedFile $file
     ): Response {
         return $this->json($this->authorService->uploadCover($id, $file));
