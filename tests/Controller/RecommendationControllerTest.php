@@ -4,6 +4,7 @@ namespace App\Tests\Controller;
 
 use App\Entity\Book;
 use App\Tests\AbstractControllerTest;
+use App\Tests\MockUtils;
 use DateTimeImmutable;
 use Hoverfly\Client as HoverflyClient;
 use Hoverfly\Model\RequestFieldMatcher;
@@ -16,12 +17,20 @@ class RecommendationControllerTest extends AbstractControllerTest
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->setUpHoverfly();
     }
 
-    public function testRecommendationByBook(): void
+    public function testRecommendationsByBookId(): void
     {
-        $id = $this->createBook();
+        $user = MockUtils::createUser();
+        $this->em->persist($user);
+
+        $book = MockUtils::createBook()->setUser($user);
+        $this->em->persist($book);
+
+        $this->em->flush();
+
         $requestedId = 123;
 
         $this->hoverfly->simulate(
@@ -35,12 +44,12 @@ class RecommendationControllerTest extends AbstractControllerTest
                 ->willReturn(Response::json([
                     'ts' => 12345,
                     'id' => $requestedId,
-                    'recommendations' => [['id' => $id]],
+                    'recommendations' => [['id' => $book->getId()]],
                 ]))
         );
 
         $this->client->request('GET', '/api/v1/book/123/recommendations');
-        $responseContent = $this->client->getResponse()->getContent();
+        $responseContent = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertResponseIsSuccessful();
         $this->assertJsonDocumentMatchesSchema($responseContent, [
@@ -65,29 +74,10 @@ class RecommendationControllerTest extends AbstractControllerTest
         ]);
     }
 
-    private function createBook(): int
+    private function setUpHoverfly(): void
     {
-        $book = (new Book())->setTitle('TestBook')
-            ->setId(1)
-            ->setImage('http://localhost.png')
-            ->setMeap(true)
-            ->setIsbn('123321')
-            ->setDescription('test')
-            ->setPublicationDate(new DateTimeImmutable())
-            ->setAutors(['Tester'])
-            ->setSlug('testbook');
-
-        $this->em->persist($book);
-        $this->em->flush();
-
-        return $book->getId();
-    }
-
-    public function setUpHoverfly()
-    {
-        $this->hoverfly = new HoverflyClient(['base_url' => $_ENV['HOVERFLY_API']]);
+        $this->hoverfly = new HoverflyClient(['base_uri' => $_ENV['HOVERFLY_API']]);
         $this->hoverfly->deleteJournal();
         $this->hoverfly->deleteSimulation();
     }
-
 }

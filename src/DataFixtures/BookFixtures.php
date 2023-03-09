@@ -19,7 +19,6 @@ class BookFixtures extends Fixture implements DependentFixtureInterface
         $book = (new Book())
             ->setTitle('PHP developer')
             ->setPublicationDate(new \DateTimeImmutable('2019-01-01'))
-            ->setMeap(false)
             ->setIsbn('123321')
             ->setDescription('test description')
             ->setAutors(['Plum Island'])

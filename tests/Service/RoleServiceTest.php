@@ -15,8 +15,6 @@ class RoleServiceTest extends AbstractTestCase
 
     private UserRepository $userRepository;
 
-    private EntityManagerInterface $em;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -27,9 +25,8 @@ class RoleServiceTest extends AbstractTestCase
             ->with(1)
             ->willReturn($this->user);
 
-        $this->em = $this->createMock(EntityManagerInterface::class);
-        $this->em->expects($this->once())
-            ->method('flush');
+        $this->userRepository->expects($this->once())
+            ->method('commit');
     }
 
     public function testGrandAdmin()
@@ -46,6 +43,6 @@ class RoleServiceTest extends AbstractTestCase
 
     private function createService(): RoleService
     {
-        return new RoleService($this->userRepository, $this->em);
+        return new RoleService($this->userRepository);
     }
 }

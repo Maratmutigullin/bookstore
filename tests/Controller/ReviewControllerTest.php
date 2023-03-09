@@ -6,6 +6,7 @@ use App\Controller\ReviewController;
 use App\Entity\Book;
 use App\Entity\Review;
 use App\Tests\AbstractControllerTest;
+use App\Tests\MockUtils;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
@@ -14,11 +15,15 @@ class ReviewControllerTest extends AbstractControllerTest
 {
     public function testReviews(): void
     {
-        $book = $this->createBook();
+        $user = MockUtils::createUser();
+        $this->em->persist($user);
 
-        $this->createReview($book);
+        $book = MockUtils::createBook()->setUser($user);
+        $this->em->persist($book);
+        $this->em->persist(MockUtils::createReview($book));
 
         $this->em->flush();
+
         $this->client->request('GET', '/api/v1/book/' . $book->getId() . '/reviews');
         $responseContent = $this->client->getResponse()->getContent();
 
@@ -49,21 +54,6 @@ class ReviewControllerTest extends AbstractControllerTest
                 ],
             ],
         ]);
-    }
-
-    private function createBook()
-    {
-        $book = (new Book())->setTitle('TestBook')
-            ->setImage('http://localhost.png')
-            ->setMeap(true)
-            ->setIsbn('123321')
-            ->setDescription('test')
-            ->setPublicationDate(new DateTimeImmutable())
-            ->setAutors(['Tester'])
-            ->setSlug('testbook');
-
-        $this->em->persist($book);
-        return $book;
     }
 
     private function createReview($book)

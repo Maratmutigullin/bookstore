@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Throwable;
 
-class ApiExeptionListener
+class ApiExceptionListener
 {
     public function __construct(
         private ExeptionMappingResolver $resolver,

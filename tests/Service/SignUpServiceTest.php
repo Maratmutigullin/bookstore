@@ -20,8 +20,6 @@ class SignUpServiceTest extends AbstractTestCase
 
     private UserRepository $userRepository;
 
-    private EntityManagerInterface $em;
-
     private AuthenticationSuccessHandler $successHandler;
 
 
@@ -29,7 +27,6 @@ class SignUpServiceTest extends AbstractTestCase
     {
         parent::setUp();
         $this->userRepository = $this->createMock(UserRepository::class);
-        $this->em = $this->createMock(EntityManagerInterface::class);
         $this->successHandler = $this->createMock(AuthenticationSuccessHandler::class);
         $this->hasher = $this->createMock(UserPasswordHasher::class);
     }
@@ -47,7 +44,7 @@ class SignUpServiceTest extends AbstractTestCase
 
     private function createService(): SignUpService
     {
-        return new SignUpService($this->hasher, $this->userRepository, $this->em, $this->successHandler);
+        return new SignUpService($this->hasher, $this->userRepository, $this->successHandler);
     }
 
     public function testSignUp(): void
@@ -72,8 +69,9 @@ class SignUpServiceTest extends AbstractTestCase
             ->with($expectedHasherUser, 'testtest')
             ->willReturn('hashed_password');
 
-        $this->em->expects($this->once())->method('persist')->with($expectedUser);
-        $this->em->expects($this->once())->method('flush');
+        $this->userRepository->expects($this->once())
+            ->method('saveAndCommit')
+            ->with($expectedUser);
 
         $this->successHandler->expects($this->once())
             ->method('handleAuthenticationSuccess')

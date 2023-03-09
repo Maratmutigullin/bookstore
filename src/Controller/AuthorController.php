@@ -23,6 +23,8 @@ use App\Model\IdResponse;
 use App\Model\Author\UploadCoverResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class AuthorController extends AbstractController
 {

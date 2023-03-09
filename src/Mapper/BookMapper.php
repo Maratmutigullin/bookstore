@@ -26,7 +26,6 @@ class BookMapper
             ->setSlug($book->getSlug())
             ->setImage($book->getImage())
             ->setAuthors($book->getAutors())
-            ->setMeap($book->isMeap())
             ->setPublicationDate($publicationDate);
     }
 

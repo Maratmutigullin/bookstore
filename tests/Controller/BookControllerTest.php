@@ -7,6 +7,7 @@ use App\Entity\BookCategory;
 use App\Entity\BookFormat;
 use App\Entity\BookToBookFormat;
 use App\Tests\AbstractControllerTest;
+use App\Tests\MockUtils;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -14,9 +15,21 @@ class BookControllerTest extends AbstractControllerTest
 {
     public function testCategories(): void
     {
-        $categoryId = $this->createCategory();
+        $user = MockUtils::createUser();
+        $this->em->persist($user);
 
-        $this->client->request('GET', '/api/v1/category/' . $categoryId . '/books');
+        $bookCategory = MockUtils::createBookCategory();
+        $this->em->persist($bookCategory);
+
+        $book = (MockUtils::createBook())
+            ->setCategories(new ArrayCollection([$bookCategory]))
+            ->setUser($user);
+
+        $this->em->persist($book);
+
+        $this->em->flush();
+
+        $this->client->request('GET', '/api/v1/category/' . $bookCategory->getId() . '/books');
         $responseContent = $this->client->getResponse()->getContent();
 
         $this->assertResponseIsSuccessful();
@@ -29,13 +42,12 @@ class BookControllerTest extends AbstractControllerTest
                     'type' => 'array',
                     'items' => [
                         'type' => 'object',
-                        'required' => ['id', 'title', 'slug', 'image', 'authors', 'meap', 'publicationDate'],
+                        'required' => ['id', 'title', 'slug', 'image', 'authors', 'publicationDate'],
                         'properties' => [
                             'title' => ['type' => 'string'],
                             'slug' => ['type' => 'string'],
                             'id' => ['type' => 'integer'],
                             'image' => ['type' => 'string'],
-                            'meap' => ['type' => 'boolean'],
                             'authors' => [
                                 'type' => 'array',
                                 'items' => ['type' => 'string']
@@ -49,13 +61,30 @@ class BookControllerTest extends AbstractControllerTest
 
     public function testBookById(): void
     {
-        $book = $this->createBook();
-        $this->client->request('GET', '/api/v1/book/' . $book);
+        $user = MockUtils::createUser();
+        $this->em->persist($user);
+
+        $bookCategory = MockUtils::createBookCategory();
+        $this->em->persist($bookCategory);
+
+        $format = MockUtils::createBookFormat();
+        $this->em->persist($format);
+
+        $book = (MockUtils::createBook())
+            ->setCategories(new ArrayCollection([$bookCategory]))
+            ->setUser($user);
+
+        $this->em->persist($book);
+        $this->em->persist(MockUtils::createBookFormatLink($book, $format));
+
+        $this->em->flush();
+
+        $this->client->request('GET', '/api/v1/book/' . $book->getId());
         $responseContent = $this->client->getResponse()->getContent();
         $this->assertJsonDocumentMatchesSchema($responseContent, [
             'type' => 'object',
             'required' => [
-                'id', 'title', 'slug', 'image', 'authors', 'meap', 'publicationDate', 'rating', 'reviews',
+                'id', 'title', 'slug', 'image', 'authors', 'publicationDate', 'rating', 'reviews',
                 'categories', 'formats',
             ],
             'properties' => [
@@ -64,7 +93,6 @@ class BookControllerTest extends AbstractControllerTest
                 'id' => ['type' => 'integer'],
                 'publicationDate' => ['type' => 'integer'],
                 'image' => ['type' => 'string'],
-                'meap' => ['type' => 'boolean'],
                 'authors' => [
                     'type' => 'array',
                     'items' => ['type' => 'string'],
@@ -94,7 +122,6 @@ class BookControllerTest extends AbstractControllerTest
 
         $this->em->persist((new Book())->setTitle('TestBook')
             ->setImage('http://localhost.png')
-            ->setMeap(true)
             ->setIsbn('123321')
             ->setDescription('test')
             ->setPublicationDate(new DateTimeImmutable())
@@ -121,7 +148,6 @@ class BookControllerTest extends AbstractControllerTest
 
         $book = (new Book())->setTitle('TestBook')
             ->setImage('http://localhost.png')
-            ->setMeap(true)
             ->setIsbn('123321')
             ->setDescription('test')
             ->setPublicationDate(new DateTimeImmutable())

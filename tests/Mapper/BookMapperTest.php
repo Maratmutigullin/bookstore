@@ -18,7 +18,6 @@ class BookMapperTest extends AbstractTestCase
             ->setSlug('slug')
             ->setImage('123')
             ->setAutors(['tester'])
-            ->setMeap(true)
             ->setPublicationDate(new \DateTimeImmutable('2020-10-01'));
 
         $this->setEntityId($book, 1);
@@ -29,7 +28,6 @@ class BookMapperTest extends AbstractTestCase
             ->setSlug('slug')
             ->setImage('123')
             ->setAuthors(['tester'])
-            ->setMeap(true)
             ->setPublicationDate(1601510400);
 
         $this->assertEquals($expexted, BookMapper::map($book, new BookDetails()));

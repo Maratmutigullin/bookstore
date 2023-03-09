@@ -61,22 +61,25 @@ class RequestBodyArgumentResolverTest extends AbstractTestCase
     public function testResolveThrowsWhenValidationFalse(): void
     {
         $this->expectException(ValidationException::class);
+
         $body = ['test' => true];
-        $encodeBody = json_encode($body);
+        $encodedBody = json_encode($body);
 
+        $request = new Request([], [], [], [], [], [], $encodedBody);
+        $meta = new ArgumentMetadata('some', stdClass::class, false, false, null, false, [
+            new RequestBody(),
+        ]);
 
-        $request = new Request([], [], [], [], [], [], 'testing content');
-        $meta = new ArgumentMetadata('some', stdClass::class, false, false, null,);
         $this->serializer->expects($this->once())
             ->method('deserialize')
-            ->with($encodeBody, stdClass::class, JsonEncoder::FORMAT)
+            ->with($encodedBody, stdClass::class, JsonEncoder::FORMAT)
             ->willReturn($body);
 
         $this->validator->expects($this->once())
             ->method('validate')
             ->with($body)
             ->willReturn(new ConstraintViolationList([
-                new ConstraintViolation('error', null, [], null,'some', null)
+                new ConstraintViolation('error', null, [], null, 'some', null),
             ]));
 
         $this->createResolver()->resolve($request, $meta)->next();
@@ -85,16 +88,17 @@ class RequestBodyArgumentResolverTest extends AbstractTestCase
 
     public function testResolve(): void
     {
-        $this->expectException(ValidationException::class);
         $body = ['test' => true];
-        $encodeBody = json_encode($body);
+        $encodedBody = json_encode($body);
 
+        $request = new Request([], [], [], [], [], [], $encodedBody);
+        $meta = new ArgumentMetadata('some', stdClass::class, false, false, null, false, [
+            new RequestBody(),
+        ]);
 
-        $request = new Request([], [], [], [], [], [], 'testing content');
-        $meta = new ArgumentMetadata('some', stdClass::class, false, false, null,);
         $this->serializer->expects($this->once())
             ->method('deserialize')
-            ->with($encodeBody, stdClass::class, JsonEncoder::FORMAT)
+            ->with($encodedBody, stdClass::class, JsonEncoder::FORMAT)
             ->willReturn($body);
 
         $this->validator->expects($this->once())
@@ -102,8 +106,9 @@ class RequestBodyArgumentResolverTest extends AbstractTestCase
             ->with($body)
             ->willReturn(new ConstraintViolationList([]));
 
-      $actual  =  $this->createResolver()->resolve($request, $meta);
-      $this->assertEquals($body, $actual->current());
+        $actual = $this->createResolver()->resolve($request, $meta);
+
+        $this->assertEquals($body, $actual->current());
     }
     private function createResolver(): RequestBodyArgumentResolver
     {

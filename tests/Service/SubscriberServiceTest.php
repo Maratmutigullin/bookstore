@@ -15,18 +15,15 @@ class SubscriberServiceTest extends AbstractTestCase
 {
     private SubscriberRepository $repository;
 
-    private EntityManagerInterface $em;
-
     private const EMAIL = 'test@test.com';
 
     public function setUp(): void
     {
         parent::setUp();
         $this->repository = $this->createMock(SubscriberRepository::class);
-        $this->em = $this->createMock(EntityManagerInterface::class);
     }
 
-    public function testSubscribealreadyExist(): void
+    public function testSubscribeAlreadyExist(): void
     {
         $this->expectException(SubscriberEmailExistsExeption::class);
         $this->repository->expects($this->once())
@@ -36,8 +33,9 @@ class SubscriberServiceTest extends AbstractTestCase
         $request = new SubscriberRequest();
         $request->setEmail(self::EMAIL);
 
-        (new SubscriberService($this->repository, $this->em))->subscribe($request);
+        (new SubscriberService($this->repository))->subscribe($request);
     }
+
     public function testSubscribe(): void
     {
 
@@ -49,12 +47,13 @@ class SubscriberServiceTest extends AbstractTestCase
         $expectedSubscrier = new Subscriber();
         $expectedSubscrier->setEmail(self::EMAIL);
 
-        $this->em->expects($this->once())
-            ->method('flush');
-
         $request = new SubscriberRequest();
         $request->setEmail(self::EMAIL);
 
-        (new SubscriberService($this->repository, $this->em))->subscribe($request);
+        $this->repository->expects($this->once())
+            ->method('saveAndCommit')
+            ->with($expectedSubscrier);
+
+        (new SubscriberService($this->repository))->subscribe($request);
     }
 }

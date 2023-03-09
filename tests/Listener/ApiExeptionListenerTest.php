@@ -2,13 +2,13 @@
 
 namespace App\Tests\Listener;
 
-use App\Listener\ApiExeptionListener;
+use App\Listener\ApiExceptionListener;
 use App\Model\ErrorDebugDetails;
 use App\Model\ErrorResponse;
 use App\Service\ExeptionHandler\ExeptionMapping;
 use App\Service\ExeptionHandler\ExeptionMappingResolver;
 use App\Tests\AbstractTestCase;
-use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Exception\MappingException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ApiExeptionListenerTest extends AbstractTestCase
@@ -67,9 +66,9 @@ class ApiExeptionListenerTest extends AbstractTestCase
         $this->assertJsonStringEqualsJsonString($expectedBody, $actualResponse->getContent());
     }
 
-    private function runListener(ExceptionEvent $event, $isDebug = false): void
+    private function runListener(ExceptionEvent $event, bool $isDebug = false): void
     {
-        (new ApiExeptionListener($this->resolver, $this->logger, $this->serializer, $isDebug))($event);
+        (new ApiExceptionListener($this->resolver, $this->logger, $this->serializer, $isDebug))($event);
     }
 
     public function createEvent(InvalidArgumentException $e): ExceptionEvent
@@ -189,7 +188,7 @@ class ApiExeptionListenerTest extends AbstractTestCase
             ->method('error')
             ->with('error message', $this->anything());
 
-        $event = $this->createExceptionEvent(new InvalidArgumentException($responseMessage));
+        $event = $this->createExceptionEvent(new InvalidArgumentException('error message'));
 
         $this->runListener($event);
 
@@ -224,5 +223,14 @@ class ApiExeptionListenerTest extends AbstractTestCase
         $this->runListener($event, true);
 
         $this->assertResponse(Response::HTTP_NOT_FOUND, $responseBody, $event->getResponse());
+    }
+
+    public function testIgnoreSecurityException(): void
+    {
+        $this->resolver->expects($this->never())
+            ->method('resolve');
+
+        $event = $this->createExceptionEvent(new AuthenticationException());
+        $this->runListener($event, true);
     }
 }

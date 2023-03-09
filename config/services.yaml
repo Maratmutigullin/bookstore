@@ -44,7 +44,7 @@ services:
     App\Service\ExeptionHandler\ExeptionMappingResolver:
         arguments: ['%exceptions%']
 #event должен быть опр обязательно ниже  App\: resource: '../src/'
-    App\Listener\ApiExeptionListener:
+    App\Listener\ApiExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, priority: 10 }
     App\Listener\ValidationExceptionListener:
