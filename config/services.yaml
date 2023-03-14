@@ -9,6 +9,8 @@ parameters:
         #App\Exeption\BookCategoryNotFoundExeption: {code: 404, hidden: false, loggable: false }
         Symfony\Component\HttpKernel\Exception\NotFoundHttpException: { code: 404 }
         App\Exception\BookCategoryNotFoundException: {code: 404, hidden: false}
+        App\Exception\BookChapterNotFoundException: {code: 404, hidden: false}
+        #App\Exception\BookChapterInvalidSortException: {code: 404, hidden: false}
         App\Exception\SubscriberEmailExistsExeption: {code: 409, hidden: false}
         App\Exception\UserAlreadyExistsException: {code: 409, hidden: false}
         App\Exception\BookAlreadyExistsException: {code: 409, hidden: false}
